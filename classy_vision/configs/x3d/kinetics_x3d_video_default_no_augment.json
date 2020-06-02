@@ -1,0 +1,204 @@
+{
+    "name": "classification_task",
+    "num_epochs": 1,
+    "test_phase_period": 1,
+    "test_only":true,
+    "loss": {
+      "name": "CrossEntropyLoss"
+    },
+    "dataset": {
+      "train": {
+        "name": "kinetics400",
+        "num_workers": 0,
+        "split": "train",
+        "batchsize_per_replica": 16,
+        "use_shuffle": true,
+        "num_samples": null,
+        "frames_per_clip": 8,
+        "frame_rate": 5,
+        "step_between_clips": 1,
+        "clips_per_video": 1,
+        "video_dir": "/ssd1/charles/Mini-Kinetics-200/train_256",
+        "metadata_file": "/ssd1/charles/Mini-Kinetics-200/train_256_meta",
+        "extensions": "mp4",
+        "transforms": {
+          "video": [
+            {
+              "name": "video_default_augment",
+              "crop_size": 224,
+              "size_range": [
+                256,
+                320
+              ]
+            }
+          ]
+        }
+      },
+      "test": {
+        "name": "kinetics400",
+        "num_workers": 0,
+        "split": "val",
+        "batchsize_per_replica": 10,
+        "use_shuffle": false,
+        "num_samples": null,
+        "frames_per_clip": 8,
+        "frame_rate": 4,
+        "step_between_clips": 1,
+        "clips_per_video": 10,
+        "video_dir": "/ssd1/charles/Mini-Kinetics-200/val",
+        "metadata_file": "/ssd1/charles/Mini-Kinetics-200/val_meta",
+        "extensions": "mp4",
+        "transforms": {
+          "video": [
+            {
+              "name": "video_default_no_augment",
+              "size": 256
+            }
+          ]
+        }
+      }
+    },
+    "meters": {
+      "accuracy": {
+        "topk": [
+          1,
+          5
+        ]
+      },
+      "video_accuracy": {
+        "topk": [
+          1,
+          5
+        ],
+        "clips_per_video_train": 1,
+        "clips_per_video_test": 10
+      }
+    },
+    "model": {
+      "sync_bn": false,
+      "name": "x3d_large_super_net",
+      "input_key": "video",
+      "num_classes": 200,
+      "derive": true,
+      "signature": [
+        [
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0]
+        ],
+        [
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0], 
+            [0, 0, 0, 0, 1, 0]
+        ],
+        [
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0], 
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0]]
+        ],
+        "cfg": [
+            [0, 2.25,  24, 1, 1, 2],
+            [1, 2.25, 24, 1, 2, 1],
+            [2, 2.25,  48, 1, 1, 2],
+            [3, 2.25, 48, 1, 2, 1],
+            [4, 2.25,    48, 1, 2, 1],
+            [5, 2.25,  96, 1, 1, 2],
+            [6, 2.25, 96, 1, 2, 1],
+            [7, 2.25,    96, 1, 2, 1],
+            [8, 2.25,    96, 1, 2, 1],
+            [9, 2.25,  96, 1, 2, 1],
+            [10, 2.25, 96, 1, 2, 1],
+            [11, 2.25, 192, 1, 1, 2],
+            [12, 2.25, 192, 1, 2, 1],
+            [13, 2.25, 192, 1, 2, 1],
+            [14, 2.25, 192, 1, 2, 1]
+        ],
+      "width_mult": 1.0,
+      "input_frame": 16,
+      "heads": [
+        {
+          "name": "fully_convolutional_linear_2",
+          "unique_id": "default_head",
+          "in_plane": 432,
+          "mid_plane": 2048,
+          "pool_size": [
+            16,
+            7,
+            7
+          ],
+          "activation_func": "softmax",
+          "num_classes": 200,
+          "fork_block": "last_conv2d_1x1",
+          "use_dropout": false
+        }
+      ]
+    },
+    "optimizer": {
+      "name": "sgd",
+      "param_schedulers": {
+        "lr": {
+          "name": "composite",
+          "schedulers": [
+            {
+              "name": "linear",
+              "start_value": 0.025,
+              "end_value": 0.1
+            },
+            {
+              "name": "cosine",
+              "start_value": 0.1,
+              "end_value": 0.00005
+            }
+          ],
+          "update_interval": "epoch",
+          "interval_scaling": [
+            "rescaled",
+            "rescaled"
+          ],
+          "lengths": [
+            0.1333,
+            0.8667
+          ]
+        }
+      },
+      "weight_decay": 0.0001,
+      "momentum": 0.9,
+      "nesterov": true
+  }
+}
