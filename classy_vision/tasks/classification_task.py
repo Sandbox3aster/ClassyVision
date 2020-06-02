@@ -764,11 +764,15 @@ class ClassificationTask(ClassyTask):
             + "'target' keys"
         )
 
-        target = sample["target"]
         if self.use_gpu:
             sample = recursive_copy_to_gpu(sample, non_blocking=True)
 
         with torch.no_grad():
+            if len(sample["input"]["video"].shape) == 6:
+                video = sample["input"]["video"]
+                target = sample["target"]
+                sample["input"]["video"] = video.view((-1, video.shape[-4], video.shape[-3], video.shape[-2], video.shape[-1]))
+                sample["target"] = torch.stack((target,target,target), dim=1).view(-1)
             output = self.model(sample["input"])
 
             local_loss = self.compute_loss(output, sample)
